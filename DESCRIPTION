@@ -10,7 +10,9 @@ Imports:
     purrr,
     stringr,
     rlang,
-    tidyr
+    tidyr,
+    furrr,
+    progressr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

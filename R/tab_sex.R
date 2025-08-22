@@ -203,7 +203,7 @@ tab_wier_K2 <- function(dat, wskaznik, kryterium) {
       selected_cols <- grep("^(nauk |sztuki$)", names(dat), value = TRUE)
     } else if (wsk_q == "dyscypliny"){
       selected_cols <- grep(
-        "^(?!(?:nauk |sztuki$ |plec$))[[:lower:],ąćęłńóśźż ]+$",
+        "^(?!(?:nauk |sztuki$ |sexf$))[[:lower:],ąćęłńóśźż ]+$",
         names(dat), value = TRUE, perl  = TRUE)
     }
     df <- dat %>% tab({{kryterium}}) %>%
@@ -241,7 +241,7 @@ tab_wyna <- function(dat, kryterium) {
   if (n_distinct(dat$id_abs) >= 10) {
     dat_wyna = dat %>%
       group_by(id_abs, {{kryterium}}) %>%
-      summarize(wynagrodzenie = mean(wynagrodzenie, na.rm = TRUE)) %>%
+      summarize(wynagrodzenie = mean(W1, na.rm = TRUE)) %>%
       group_by({{kryterium}}) %>%
       summarize(n=n(),
                 sre=mean(wynagrodzenie, na.rm = TRUE),
@@ -257,4 +257,103 @@ tab_wyna <- function(dat, kryterium) {
   return(dat_wyna)
 }
 
+#' @title funkcja tworzaca tabele z udziałem 10 najczęstszych zawodów w szkołąch
+#'  kształcących zawodowo z podziałem na młodocianych i niemłodocianych
+#' @import daneIBE
+#' @importFrom dplyr  %>% n_distinct arrange desc select slice_head filter
+#' mutate rename as_tibble
+#' @param dat dane na podstawie ktorych ma powstac tabela powinno być p4 całe
+#' lub po filtrze
+#' @export
+tab_sz_zaw <- function(dat) {
+  if (n_distinct(dat$id_abs) >= 10) {
+    tab_sz_za = dat %>%
+      daneIBE::tab2(nazwa_zaw, typ_szk2, "k") %>%
+      as.data.frame()
 
+    mbs1 = tab_sz_za %>%
+      arrange(desc(`n_Młodociani w Branżowej szkole I stopnia`)) %>%
+      select(nazwa_zaw, `n_Młodociani w Branżowej szkole I stopnia`, `pct_Młodociani w Branżowej szkole I stopnia`) %>%
+      slice_head(n = 11) %>%
+      filter(nazwa_zaw != "SUMA") %>%
+      mutate(`pct_Młodociani w Branżowej szkole I stopnia` = round(`pct_Młodociani w Branżowej szkole I stopnia`, digits = 2)) %>%
+      rename('Młodociani w Branżowej szkole I stopnia_Zawód' = nazwa_zaw) %>%
+      rename('Młodociani w Branżowej szkole I stopnia_n' = `n_Młodociani w Branżowej szkole I stopnia`) %>%
+      rename('Młodociani w Branżowej szkole I stopnia_pct' = `pct_Młodociani w Branżowej szkole I stopnia`) %>%
+      as_tibble()
+
+    nbs1 = tab_sz_za %>%
+      arrange(desc(`n_Niemłodociani w Branżowej szkole I stopnia`)) %>%
+      select(nazwa_zaw, `n_Niemłodociani w Branżowej szkole I stopnia`, `pct_Niemłodociani w Branżowej szkole I stopnia`) %>%
+      slice_head(n = 11) %>%
+      filter(nazwa_zaw != "SUMA") %>%
+      mutate(`pct_Niemłodociani w Branżowej szkole I stopnia` = round(`pct_Niemłodociani w Branżowej szkole I stopnia`, digits = 2)) %>%
+      rename('Niemłodociani w Branżowej szkole I stopnia_Zawód' = nazwa_zaw) %>%
+      rename('Niemłodociani w Branżowej szkole I stopnia_n' = `n_Niemłodociani w Branżowej szkole I stopnia`) %>%
+      rename('Niemłodociani w Branżowej szkole I stopnia_pct' = `pct_Niemłodociani w Branżowej szkole I stopnia`) %>%
+      as_tibble()
+
+    spol = tab_sz_za %>%
+      arrange(desc(`n_Szkoła policealna`)) %>%
+      select(nazwa_zaw, `n_Szkoła policealna`, `pct_Szkoła policealna`) %>%
+      slice_head(n = 11) %>%
+      filter(nazwa_zaw != "SUMA") %>%
+      mutate(`pct_Szkoła policealna` = round(`pct_Szkoła policealna`, digits = 2)) %>%
+      rename('Szkoła policealna_Zawód' = nazwa_zaw) %>%
+      rename('Szkoła policealna_n' = `n_Szkoła policealna`) %>%
+      rename('Szkoła policealna_pct' = `pct_Szkoła policealna`) %>%
+      as_tibble()
+
+    tech = tab_sz_za %>%
+      arrange(desc(`n_Technikum`)) %>%
+      select(nazwa_zaw, `n_Technikum`, `pct_Technikum`) %>%
+      slice_head(n = 11) %>%
+      filter(nazwa_zaw != "SUMA") %>%
+      mutate(`pct_Technikum` = round(`pct_Technikum`, digits = 2)) %>%
+      rename('Technikum_Zawód' = nazwa_zaw) %>%
+      rename('Technikum_n' = n_Technikum) %>%
+      rename('Technikum_pct' =pct_Technikum) %>%
+      as_tibble()
+
+    bs2 = tab_sz_za %>%
+      arrange(desc(`n_Branżowa szkoła II stopnia`)) %>%
+      select(nazwa_zaw, `n_Branżowa szkoła II stopnia`, `pct_Branżowa szkoła II stopnia`) %>%
+      slice_head(n = 11) %>%
+      filter(nazwa_zaw != "SUMA") %>%
+      mutate(`pct_Branżowa szkoła II stopnia` = round(`pct_Branżowa szkoła II stopnia`, digits = 2)) %>%
+      rename('Branżowa szkoła II stopnia_Zawód' = nazwa_zaw) %>%
+      rename('Branżowa szkoła II stopnia_n' = `n_Branżowa szkoła II stopnia`) %>%
+      rename('Branżowa szkoła II stopnia_pct' = `pct_Branżowa szkoła II stopnia`) %>%
+      as_tibble()
+
+    tab_sz_zaw <- cbind(mbs1, nbs1, spol, tech, bs2)
+
+  } else {
+    tab_sz_zaw = data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
+  }
+  return(tab_sz_zaw)
+}
+
+#' @title funkcja tworzaca tabele krzyzowa, typ szkoły przez płeć z procentami
+#' po ogółem typie szkoły
+#' @import daneIBE
+#' @importFrom dplyr  %>% n_distinct
+#' @param dat dane na podstawie ktorych ma powstac tabela domyślnie p4 lub jakiś
+#'  fragment p4 po odfiltrowaniu
+#' @export
+tab_sz_sex <- function(dat) {
+  if (n_distinct(dat$id_abs) >= 10) {
+    t_sex_sz = dat %>%
+      daneIBE::tab2(typ_szk2, sexf, "w") %>%
+      as.data.frame()
+
+    t_sz = dat %>%
+      daneIBE::tab2(typ_szk2,  sexf, "k") %>% as.data.frame() %>%
+      select(typ_szk2, `pct_OGÓŁEM`)
+
+    tab_sz_zaw <- left_join(t_sex_sz, t_sz, by = "typ_szk2")
+  } else {
+    tab_sz_zaw = data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
+  }
+  return(tab_sz_zaw)
+}
