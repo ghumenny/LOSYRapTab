@@ -203,7 +203,7 @@ tab_wier_K2 <- function(dat, wskaznik, kryterium) {
       selected_cols <- grep("^(nauk |sztuki$)", names(dat), value = TRUE)
     } else if (wsk_q == "dyscypliny"){
       selected_cols <- grep(
-        "^(?!(?:nauk |sztuki$ |sexf$))[[:lower:],ąćęłńóśźż ]+$",
+        "^(?!(?:nauk |sexf$|plec$|sztuki$))[[:lower:],ąćęłńóśźż ]+$",
         names(dat), value = TRUE, perl  = TRUE)
     }
     df <- dat %>% tab({{kryterium}}) %>%

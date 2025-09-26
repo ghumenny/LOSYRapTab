@@ -139,6 +139,9 @@ wypelnij_wyniki_wskaznikow_rownolegle <- function(param_df, p2_1, p3, p4) {
           if (current_wskaznik %in% c("S7", "K1", "W1", "B1") && !is.na(current_rok)) {
             if (is.na(current_miesiac)) {
               dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>% filter(.data$rok == current_rok)
+            } else if (current_wskaznik == "K2") {
+              dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
+                filter(.data$rok == current_rok, .data$okres_kont == ((group_rok_abs * 12) + 12))
             } else {
             if (current_wskaznik == "W1") {
               mies_do_filtrowania <- unique(c(current_miesiac, current_miesiac - 1, current_miesiac - 2))
