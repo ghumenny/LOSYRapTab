@@ -38,9 +38,9 @@ przetwarzaj_p2 <- function(p2) {
 przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
   # Przetwarzanie zbioru p2
-  p2_1_light <- p2 %>%
-    inner_join(p4 %>%
-                 select(id_abs, rok_abs, plec, typ_szk, typ_szk2 = typ_szk,
+  p2_1_light <- przetwarzaj_p2(p2) %>%
+    left_join(p4 %>%
+                 select(id_abs, rok_abs, plec, typ_szk2 = typ_szk_mlodoc,
                         WOJ_NAZWA = nazwa_woj_szk, nazwa_zaw),
                by = c("id_abs", "rok_abs")) %>%
     mutate(
@@ -50,17 +50,29 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
         labels = c("Mężczyzna",
                    "Kobieta"))) %>%
     rename(okres_kont = okres)
+  p2_1_light$typ_szk2 <- droplevels(p2_1_light$typ_szk2)
 
   # Przetwarzanie zbioru p4
   p4_light <- p4 %>%
-    mutate(sexf = if_else(plec == "K", "Kobieta","Mężczyzna")) %>%
-    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, typ_szk2 = typ_szk, sexf,
-           nazwa_zaw, D1 = dyplom_zaw, D2 = matura_zdana)
+    mutate(
+      sexf = factor(
+        ifelse(plec == "K", 1, 0),
+        levels = c(0, 1),
+        labels = c("Mężczyzna",
+                   "Kobieta")),
+      D2 = factor(
+        matura_zdana,
+        levels = c(0, 1),
+        labels = c("Brak świadectwa dojrzałości",
+                   "Uzyskanie świadectwa dojrzałości"))) %>%
+    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, typ_szk2 = typ_szk_mlodoc, sexf,
+           nazwa_zaw, D1 = dyplom_zaw, D2)
+  p4_light$typ_szk2 <- droplevels(p4_light$typ_szk2)
 
   # Przetwarzanie zbioru p3
   p3_light <- p3 %>%
     left_join(p4 %>% select(id_abs, rok_abs, teryt_pow_szk, nazwa_woj_szk,
-                            typ_szk, plec, nazwa_zaw),
+                            typ_szk_mlodoc, plec, nazwa_zaw),
               by = c("id_abs" = "id_abs", "rok_abs" = "rok_abs")) %>%
     unite("mscrok", c(miesiac, rok), remove = FALSE, sep = ".") %>%
     mutate(
@@ -69,7 +81,7 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
         levels = c(0, 1),
         labels = c("Mężczyzna", "Kobieta")),
       B1 = factor(
-        ifelse(bezrobocie >= 1, 1, 0),
+        ifelse(is.na(bezrobocie) | bezrobocie < 1, 0, 1),
         levels = c(0, 1),
         labels = c("Brak statusu bezrobotnego", "Zarejestrowany jako bezrobotny")),
       nauka_bs2stf = factor(
@@ -94,9 +106,10 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
         labels = c("Brak kontynuacji nauki w ramach KKZ", "Kontynuacja nauki w ramach KKZ"))
     ) %>%
     select(id_abs, rok_abs, rok, miesiac, mscrok, WOJ_NAZWA = nazwa_woj_szk,
-           typ_szk2 = typ_szk, teryt_pow_szk, sexf, nazwa_zaw,
+           typ_szk2 = typ_szk_mlodoc, teryt_pow_szk, sexf, nazwa_zaw,
            S7 = status, nauka_studiaf, nauka_spolicf, nauka_kkzf,
            nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie)
+  p3_light$typ_szk2 <- droplevels(p3_light$typ_szk2)
 
   # Zwracanie listy z wynikowymi ramkami danych
   return(list(p2_1_light = p2_1_light,
