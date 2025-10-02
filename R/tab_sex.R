@@ -163,7 +163,7 @@ tab_kolu_K1 <- function(dat, wskazniki, kryterium) {
   for (k in wsk) {
     wskaznik <- as.name(k)
     dat_kolu_K1[[k]] <- tab_kolu(dat, {{wskaznik}}, {{kryterium}}) %>%
-      arrange(desc(n_SUMA)) %>% as.data.frame() %>% slice(2:11)
+      arrange(desc(n_SUMA)) %>% as.data.frame() %>% slice(-1)
   }
   dat_kolu_K1 <- dat_kolu_K1 %>%
     bind_cols() %>%
