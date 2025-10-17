@@ -4,27 +4,28 @@
 \alias{polacz_ramki_wskaznikow}
 \title{Łączenie ramek danych parametrów dla wszystkich wskaźników}
 \usage{
-polacz_ramki_wskaznikow(glowna_edycja)
+polacz_ramki_wskaznikow(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której mają być generowane dane. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Jedna duża ramka danych typu \code{tibble} zawierająca unikalne kombinacje
-parametrów dla wszystkich wskaźników i typów agregacji. Ramka będzie zawierać kolumny:
-\code{wskaznik}, \code{WOJ_NAZWA}, \code{typ_szk2}, \code{rok_abs}, \code{edycja}, \code{kryterium},
-\code{typ_k1_analizy} (dla K1, \code{NA} dla innych), \code{parametr_k1_wartosci} (dla K1, \code{NA} dla innych),
-\code{typ_k2_analizy} (dla K2, \code{NA} dla innych), \code{parametr_grupa_szkol} (dla nowej agregacji, \code{NA} dla innych),
-oraz \code{wynik} (kolumna listowa z \code{NULL}).
+parametrów dla wszystkich wskaźników i typów agregacji. Kolumna grupująca
+będzie nosiła nazwę \strong{\code{WOJ_NAZWA} lub \code{branza}} w zależności od parametru \code{typ}.
 }
 \description{
 Funkcja przyjmuje główną edycję projektu i generuje osobne ramki danych
 dla każdego wskaźnika (S7, D1, D2, K1, K2, W1, B1 oraz dla tabel meta)
 za pomocą dedykowanych funkcji.
 Następnie łączy te ramki w jedną spójną ramkę, która może służyć jako szablon
-do przechowywania parametrów i wyników rozkładów. Kolumny specyficzne dla
-wskaźników K1 i K2 (tj. \code{typ_k1_analizy}, \code{parametr_k1_wartosci},
-\code{typ_k2_analizy}, \code{parametr_grupa_szkol}) #'   będą zawierały wartości \code{NA}
-dla pozostałych wskaźników, zapewniając spójność struktury.
+do przechowywania parametrów i wyników rozkładów.
+\strong{Generowanie danych jest zależne od parametru \code{typ}:} dla \code{typ="woj"}
+generowane są wszystkie ramki, włącznie z migracją, a kolumna grupująca to
+\code{WOJ_NAZWA}. Dla \code{typ="bran"} generowane są parametry dla branż, a ramka migracji
+(\code{ramka_migracje}) jest pomijana.
 }

@@ -4,16 +4,19 @@
 \alias{generuj_ramke_s7_parametry}
 \title{Generowanie parametrów dla wskaźnika S7}
 \usage{
-generuj_ramke_s7_parametry(glowna_edycja)
+generuj_ramke_s7_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (z wartością "S7"), \code{WOJ_NAZWA}, \code{typ_szk2}, \code{rok_abs},
-\code{edycja}, \code{kryterium} oraz \code{wynik} (inicjowany jako \code{NULL}).
+\code{wskaznik} (z wartością "S7"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})}, \code{typ_szk2},
+\code{rok_abs}, \code{edycja}, \code{kryterium}, \code{rok}, \code{miesiac} oraz \code{wynik} (inicjowany jako \code{NULL}).
 }
 \description{
 Funkcja tworzy ramkę danych zawierającą unikalne kombinacje parametrów
@@ -23,4 +26,5 @@ Rok ukończenia szkoły (\code{rok_abs}) jest obliczany na podstawie głównej e
 Zmienna \code{kryterium} jest dobierana dynamicznie: dla typów szkół
 "Liceum ogólnokształcące", "Liceum dla dorosłych" i "Szkoła specjalna przysposabiająca do pracy"
 przyjmuje wartość "sexf", a dla pozostałych typów szkół przyjmuje "sexf" i "nazwa_zaw".
+\strong{Agregacja jest wykonywana dla województw (\code{typ="woj"}) lub dla branż (\code{typ="bran"}).}
 }

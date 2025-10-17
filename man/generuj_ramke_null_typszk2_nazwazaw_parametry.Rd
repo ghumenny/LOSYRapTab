@@ -2,25 +2,28 @@
 % Please edit documentation in R/tab_ramka.R
 \name{generuj_ramke_null_typszk2_nazwazaw_parametry}
 \alias{generuj_ramke_null_typszk2_nazwazaw_parametry}
-\title{Generowanie parametrów ogólnych dla wskaźników z typ_szk2 = NULL
-i kryterium = nazwa_zaw dla wybranej grupy szkół}
+\title{Generowanie parametrów ogólnych dla wskaźników z typ_szk2 = NULL i kryterium = nazwa_zaw dla wybranej grupy szkół}
 \usage{
-generuj_ramke_null_typszk2_nazwazaw_parametry(glowna_edycja)
+generuj_ramke_null_typszk2_nazwazaw_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (z wartością "meta_zaw"), \code{WOJ_NAZWA}, \code{typ_szk2} (NULL), \code{rok_abs},
-\code{edycja}, \code{kryterium} (z wartością "nazwa_zaw") oraz \code{wynik} (inicjowany jako \code{NULL}).
-Kolumna \code{parametr_grupa_szkol} będzie zawierać listę typów szkół objętych tą agregacją.
+\code{wskaznik} (z wartością "meta_zaw"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})},
+\code{typ_szk2} (NULL), \code{rok_abs}, \code{edycja}, \code{kryterium} (z wartością "nazwa_zaw"), \code{rok}, \code{miesiac}
+oraz \code{wynik} (inicjowany jako \code{NULL}). Kolumna \code{parametr_grupa_szkol} będzie zawierać
+listę typów szkół objętych tą agregacją.
 }
 \description{
 Funkcja tworzy ramkę danych dla ogólnego wskaźnika obejmującego
 specyficzną grupę szkół, gdzie typ_szk2 jest traktowany jako NULL
-(agregacja na poziomie województwa dla tej grupy), a kryterium to
+(agregacja na poziomie województwa/branży dla tej grupy), a kryterium to
 "nazwa_zaw". Jest to użyteczne dla analiz ogólnych w kontekście zawodów
 dla określonej podgrupy szkół.
 }

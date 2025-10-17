@@ -4,24 +4,27 @@
 \alias{generuj_ramke_k2_parametry}
 \title{Generowanie parametrów dla wskaźnika K2}
 \usage{
-generuj_ramke_k2_parametry(glowna_edycja)
+generuj_ramke_k2_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (z wartością "K2"), \code{WOJ_NAZWA}, \code{typ_szk2}, \code{rok_abs},
-\code{edycja}, \code{kryterium}, \code{typ_k2_analizy} (identyfikator kategorii analizy K2)
-oraz \code{wynik} (inicjowany jako \code{NULL}).
+\code{wskaznik} (z wartością "K2"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})}, \code{typ_szk2},
+\code{rok_abs}, \code{edycja}, \code{kryterium}, \code{parametr_K2}, \code{rok}, \code{miesiac} oraz \code{wynik} (inicjowany jako \code{NULL}).
 }
 \description{
 Funkcja tworzy ramkę danych zawierającą unikalne kombinacje parametrów
 dla wskaźnika K2. Wskaźnik K2 posiada dwie kategorie analizy: "dziedziny"
-i "dyscypliny" (przechowywane w kolumnie \code{typ_k2_analizy}).
+i "dyscypliny" (przechowywane w kolumnie \code{parametr_K2}).
 Rok ukończenia szkoły (\code{rok_abs}) jest obliczany na podstawie głównej edycji
 (parametr \code{glowna_edycja}), przyjmując wartości \code{edycja - 1}, \code{edycja - 2} i \code{edycja - 5}.
 Typy szkół obejmują wszystkie dostępne typy z listy \code{TYPY_SZKOL}.
 Zmienna \code{kryterium} jest dobierana dynamicznie w zależności od typu szkoły.
+\strong{Agregacja jest wykonywana dla województw (\code{typ="woj"}) lub dla branż (\code{typ="bran"}).}
 }

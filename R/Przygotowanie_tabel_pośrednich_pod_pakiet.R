@@ -34,6 +34,7 @@ przetwarzaj_p2 <- function(p2) {
 #' @return Zwraca listę z trzema ramkami danych: p2_1_light, p3_light, p4_light.
 #' @importFrom dplyr %>% inner_join select mutate rename left_join if_else
 #' @importFrom tidyr unite
+#' @importFrom stringr str_pad
 #' @export
 przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
@@ -41,7 +42,7 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
   p2_1_light <- przetwarzaj_p2(p2) %>%
     left_join(p4 %>%
                  select(id_abs, rok_abs, plec, typ_szk2 = typ_szk_mlodoc,
-                        WOJ_NAZWA = nazwa_woj_szk, nazwa_zaw),
+                        WOJ_NAZWA = nazwa_woj_szk, branza, nazwa_zaw),
                by = c("id_abs", "rok_abs")) %>%
     mutate(
       sexf = factor(
@@ -65,14 +66,14 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
         levels = c(0, 1),
         labels = c("Brak świadectwa dojrzałości",
                    "Uzyskanie świadectwa dojrzałości"))) %>%
-    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, typ_szk2 = typ_szk_mlodoc, sexf,
+    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2 = typ_szk_mlodoc, sexf,
            nazwa_zaw, D1 = dyplom_zaw, D2)
   p4_light$typ_szk2 <- droplevels(p4_light$typ_szk2)
 
   # Przetwarzanie zbioru p3
   p3_light <- p3 %>%
     left_join(p4 %>% select(id_abs, rok_abs, teryt_pow_szk, nazwa_woj_szk,
-                            typ_szk_mlodoc, plec, nazwa_zaw),
+                            typ_szk_mlodoc, plec, nazwa_zaw, branza),
               by = c("id_abs" = "id_abs", "rok_abs" = "rok_abs")) %>%
     unite("mscrok", c(miesiac, rok), remove = FALSE, sep = ".") %>%
     mutate(
@@ -103,12 +104,17 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
       nauka_kkzf = factor(
         ifelse(nauka_kkz == 1, 1, 0),
         levels = c(0, 1),
-        labels = c("Brak kontynuacji nauki w ramach KKZ", "Kontynuacja nauki w ramach KKZ"))
+        labels = c("Brak kontynuacji nauki w ramach KKZ", "Kontynuacja nauki w ramach KKZ")),
+      teryt_woj = as.character(teryt_zam) %>%
+        str_pad(width = 4, side = "left", pad = "0") %>%
+        substr(1, 2) %>%
+        as.numeric() %>%
+        as.character()
     ) %>%
     select(id_abs, rok_abs, rok, miesiac, mscrok, WOJ_NAZWA = nazwa_woj_szk,
-           typ_szk2 = typ_szk_mlodoc, teryt_pow_szk, sexf, nazwa_zaw,
+           branza, typ_szk2 = typ_szk_mlodoc, teryt_pow_szk, sexf, nazwa_zaw,
            S7 = status, nauka_studiaf, nauka_spolicf, nauka_kkzf,
-           nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie)
+           nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie, teryt_woj)
   p3_light$typ_szk2 <- droplevels(p3_light$typ_szk2)
 
   # Zwracanie listy z wynikowymi ramkami danych

@@ -66,6 +66,40 @@ WOJ_NAZWY <- c("Polska",
   "wielkopolskie", "zachodniopomorskie"
 )
 
+branza <- c( "branża hotelarsko-gastronomiczno-turystyczna",
+             "branża elektroniczno-mechatroniczna",
+             "branża mechaniczna",
+             "branża budowlana",
+             "branża rolno-hodowlana",
+             "branża motoryzacyjna",
+             "branża handlowa",
+             "branża spedycyjno-logistyczna",
+             "branża ekonomiczno-administracyjna",
+             "branża fryzjersko-kosmetyczna",
+             "branża spożywcza",
+             "branża audiowizualna",
+             "branża poligraficzna",
+             "branża teleinformatyczna",
+             "branża transportu lotniczego",
+             "branża chemiczna i ochrony środowiska",
+             "branża ochrony i bezpieczeństwa osób i mienia",
+             "branża elektroenergetyczna",
+             "branża leśna",
+             "branża ogrodnicza",
+             "branża drzewno-meblarska",
+             "branża opieki zdrowotnej",
+             "branża mechaniki precyzyjnej",
+             "branża przemysłu mody",
+             "branża górniczo-wiertnicza",
+             "branża transportu wodnego",
+             "branża metalurgiczna",
+             "branża transportu kolejowego",
+             "branża transportu drogowego",
+             "branża pomocy społecznej",
+             "branża poligraficzno-księgarska",
+             "branża ceramiczna-szklarska",
+             "branża rybacka" )
+
 KRYTERIUM_SEXY_I_NAZWA <- c("sexf", "nazwa_zaw")
 KRYTERIUM_SEXY_TYLKO <- "sexf"
 

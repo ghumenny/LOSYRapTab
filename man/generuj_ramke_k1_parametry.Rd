@@ -4,17 +4,20 @@
 \alias{generuj_ramke_k1_parametry}
 \title{Generowanie parametrów dla wskaźnika K1}
 \usage{
-generuj_ramke_k1_parametry(glowna_edycja)
+generuj_ramke_k1_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (z wartością "K1"), \code{WOJ_NAZWA}, \code{typ_szk2}, \code{rok_abs},
-\code{edycja}, \code{kryterium}, \code{typ_k1_analizy} (identyfikator kategorii analizy K1),
-\code{parametr_k1_wartosci} (lista wartości specyficznych dla kategorii K1)
+\code{wskaznik} (z wartością "K1"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})}, \code{typ_szk2},
+\code{rok_abs}, \code{edycja}, \code{kryterium}, \code{typ_k1_analizy} (identyfikator kategorii analizy K1),
+\code{parametr_k1_wartosci} (lista wartości specyficznych dla kategorii K1), \code{rok}, \code{miesiac}
 oraz \code{wynik} (inicjowany jako \code{NULL}).
 }
 \description{
@@ -26,4 +29,5 @@ Rok ukończenia szkoły (\code{rok_abs}) jest obliczany na podstawie głównej e
 (parametr \code{glowna_edycja}), przyjmując wartości \code{edycja - 1}, \code{edycja - 2} i \code{edycja - 5}.
 Typy szkół obejmują wszystkie dostępne typy z listy \code{TYPY_SZKOL}.
 Zmienna \code{kryterium} jest dobierana dynamicznie w zależności od typu szkoły.
+\strong{Agregacja jest wykonywana dla województw (\code{typ="woj"}) lub dla branż (\code{typ="bran"}).}
 }

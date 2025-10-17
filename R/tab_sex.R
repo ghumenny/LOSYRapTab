@@ -203,7 +203,7 @@ tab_wier_K2 <- function(dat, wskaznik, kryterium) {
       selected_cols <- grep("^(nauk |sztuki$)", names(dat), value = TRUE)
     } else if (wsk_q == "dyscypliny"){
       selected_cols <- grep(
-        "^(?!(?:nauk |sexf$|plec$|sztuki$))[[:lower:],ąćęłńóśźż ]+$",
+        "^(?!(?:nauk |sexf$|branza$|plec$|sztuki$))[[:lower:],ąćęłńóśźż ]+$",
         names(dat), value = TRUE, perl  = TRUE)
     }
     df <- dat %>% tab({{kryterium}}) %>%
@@ -356,4 +356,22 @@ tab_sz_sex <- function(dat) {
     tab_sz_zaw = data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
   }
   return(tab_sz_zaw)
+}
+
+#' @title funkcja tworzaca tabele z odsetkiem w kategoriach zmiennej (pierwotnie
+#' do tworzenia tabel do migracji)
+#' @import daneIBE
+#' @importFrom dplyr  %>% n_distinct
+#' @param dat dane na podstawie ktorych ma powstac tabela
+#' @param kryterium zmienna której częstości mają być wyliczone
+#' @export
+tab_freq <- function(dat, kryterium) {
+  if (n_distinct(dat$id_abs) >= 10) {
+    dat_freq = dat %>%
+      daneIBE::tab({{kryterium}}) %>%
+      as.data.frame()
+  } else {
+    dat_freq = data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
+  }
+  return(dat_freq)
 }

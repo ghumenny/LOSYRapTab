@@ -4,16 +4,19 @@
 \alias{generuj_ramke_d2_parametry}
 \title{Generowanie parametrów dla wskaźnika D2}
 \usage{
-generuj_ramke_d2_parametry(glowna_edycja)
+generuj_ramke_d2_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (z wartością "D2"), \code{WOJ_NAZWA}, \code{typ_szk2}, \code{rok_abs},
-\code{edycja}, \code{kryterium} oraz \code{wynik} (inicjowany jako \code{NULL}).
+\code{wskaznik} (z wartością "D2"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})}, \code{typ_szk2},
+\code{rok_abs}, \code{edycja}, \code{kryterium} oraz \code{wynik} (inicjowany jako \code{NULL}).
 }
 \description{
 Funkcja tworzy ramkę danych zawierającą unikalne kombinacje parametrów
@@ -23,4 +26,5 @@ Wskaźnik D2 jest obliczany tylko dla typów szkół z listy:
 Rok ukończenia szkoły (\code{rok_abs}) jest obliczany na podstawie głównej edycji
 (parametr \code{glowna_edycja}), przyjmując wartości \code{edycja - 1}, \code{edycja - 2} i \code{edycja - 5}.
 Zmienna \code{kryterium} jest dobierana dynamicznie w zależności od typu szkoły.
+\strong{Agregacja jest wykonywana dla województw (\code{typ="woj"}) lub dla branż (\code{typ="bran"}).}
 }

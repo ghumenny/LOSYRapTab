@@ -2,23 +2,26 @@
 % Please edit documentation in R/tab_ramka.R
 \name{generuj_ramke_null_typszk2_sexf_parametry}
 \alias{generuj_ramke_null_typszk2_sexf_parametry}
-\title{Generowanie parametrów ogólnych dla wskaźników z typ_szk2 = NULL i
-kryterium = sexf}
+\title{Generowanie parametrów ogólnych dla wskaźników z typ_szk2 = NULL i kryterium = sexf}
 \usage{
-generuj_ramke_null_typszk2_sexf_parametry(glowna_edycja)
+generuj_ramke_null_typszk2_sexf_parametry(glowna_edycja, typ = "woj")
 }
 \arguments{
 \item{glowna_edycja}{Liczba całkowita reprezentująca główną edycję (rok),
 dla której generowane są parametry. Np. 2025.}
+
+\item{typ}{Ciąg znaków określający poziom agregacji: \strong{"woj"} (województwa, domyślnie)
+lub \strong{"bran"} (branże).}
 }
 \value{
 Ramka danych typu \code{tibble} zawierająca kolumny:
-\code{wskaznik} (nazwa wskaźnika, np. "S7"), \code{WOJ_NAZWA}, \code{typ_szk2} (NULL), \code{rok_abs},
-\code{edycja}, \code{kryterium} (z wartością "sexf") oraz \code{wynik} (inicjowany jako \code{NULL}).
+\code{wskaznik} (nazwa wskaźnika, np. "S7"), \strong{\code{WOJ_NAZWA} lub \code{branza} (zależnie od \code{typ})},
+\code{typ_szk2} (NULL), \code{rok_abs}, \code{edycja}, \code{kryterium} (z wartością "sexf"), \code{rok}, \code{miesiac}
+oraz \code{wynik} (inicjowany jako \code{NULL}).
 }
 \description{
 Funkcja tworzy ramkę danych dla wskaźników, gdzie typ_szk2 jest
-traktowany jako NULL (agregacja na poziomie województwa), a kryterium to
+traktowany jako NULL (agregacja na poziomie województwa/branży), a kryterium to
 zawsze "sexf". Jest to użyteczne dla analiz ogólnych, niezależnych
 od specyficznego typu szkoły.
 }
