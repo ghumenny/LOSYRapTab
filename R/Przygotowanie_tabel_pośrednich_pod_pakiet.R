@@ -38,20 +38,6 @@ przetwarzaj_p2 <- function(p2) {
 #' @export
 przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
-  # Przetwarzanie zbioru p2
-  p2_1_light <- przetwarzaj_p2(p2) %>%
-    left_join(p4 %>%
-                 select(id_abs, rok_abs, plec, typ_szk2 = typ_szk_mlodoc,
-                        WOJ_NAZWA = nazwa_woj_szk, branza, nazwa_zaw),
-               by = c("id_abs", "rok_abs")) %>%
-    mutate(
-      sexf = factor(
-        ifelse(plec == "K", 1, 0),
-        levels = c(0, 1),
-        labels = c("Mężczyzna",
-                   "Kobieta"))) %>%
-    rename(okres_kont = okres)
-  p2_1_light$typ_szk2 <- droplevels(p2_1_light$typ_szk2)
 
   # Przetwarzanie zbioru p4
   p4_light <- p4 %>%
@@ -63,24 +49,54 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
                    "Kobieta")),
       D2 = factor(
         matura_zdana,
-        levels = c(0, 1),
-        labels = c("Brak świadectwa dojrzałości",
-                   "Uzyskanie świadectwa dojrzałości"))) %>%
-    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2 = typ_szk_mlodoc, sexf,
-           nazwa_zaw, D1 = dyplom_zaw, D2)
-  p4_light$typ_szk2 <- droplevels(p4_light$typ_szk2)
+        levels = c(1, 0),
+        labels = c("Uzyskanie świadectwa dojrzałości",
+                   "Brak świadectwa dojrzałości")),
+      typ_szk2 = factor(case_when(typ_szk_mlodoc == "Liceum ogólnokształcące" ~ "Liceum ogólnokształcące dla młodzieży",
+                           typ_szk_mlodoc == "Liceum dla dorosłych" ~ "Liceum ogólnokształcące dla dorosłych",
+                           TRUE ~ typ_szk_mlodoc),
+                        levels = c(
+                          "Liceum ogólnokształcące dla młodzieży",
+                          "Liceum ogólnokształcące dla dorosłych",
+                          "Branżowa szkoła I stopnia",
+                          "Młodociani w Branżowej szkole I stopnia",
+                          "Niemłodociani w Branżowej szkole I stopnia",
+                          "Technikum",
+                          "Branżowa szkoła II stopnia",
+                          "Szkoła policealna",
+                          "Szkoła specjalna przysposabiająca do pracy"
+                        ))) %>%
+    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2, sexf,
+           nazwa_zaw, teryt_pow_szk, D1 = dyplom_zaw, D2)
+#  p4_light$typ_szk2 <- droplevels(p4_light$typ_szk2)
+
+  # Przetwarzanie zbioru p2
+  p2_1_light <- przetwarzaj_p2(p2) %>%
+    left_join(p4_light %>%
+                 select(id_abs, rok_abs, sexf, typ_szk2,
+                        WOJ_NAZWA, branza, nazwa_zaw),
+               by = c("id_abs", "rok_abs")) %>%
+    # mutate(
+    #   sexf = factor(
+    #     ifelse(plec == "K", 1, 0),
+    #     levels = c(0, 1),
+    #     labels = c("Mężczyzna",
+    #                "Kobieta"))) %>%
+    rename(okres_kont = okres)
+#  p2_1_light$typ_szk2 <- droplevels(p2_1_light$typ_szk2)
+
 
   # Przetwarzanie zbioru p3
   p3_light <- p3 %>%
-    left_join(p4 %>% select(id_abs, rok_abs, teryt_pow_szk, nazwa_woj_szk,
-                            typ_szk_mlodoc, plec, nazwa_zaw, branza),
+    left_join(p4_light %>% select(id_abs, rok_abs, teryt_pow_szk, WOJ_NAZWA,
+                            typ_szk2, sexf, nazwa_zaw, branza),
               by = c("id_abs" = "id_abs", "rok_abs" = "rok_abs")) %>%
     unite("mscrok", c(miesiac, rok), remove = FALSE, sep = ".") %>%
     mutate(
-      sexf = factor(
-        ifelse(plec == "K", 1, 0),
-        levels = c(0, 1),
-        labels = c("Mężczyzna", "Kobieta")),
+      # sexf = factor(
+      #   ifelse(plec == "K", 1, 0),
+      #   levels = c(0, 1),
+      #   labels = c("Mężczyzna", "Kobieta")),
       B1 = factor(
         ifelse(is.na(bezrobocie) | bezrobocie < 1, 0, 1),
         levels = c(0, 1),
@@ -111,11 +127,11 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
         as.numeric() %>%
         as.character()
     ) %>%
-    select(id_abs, rok_abs, rok, miesiac, mscrok, WOJ_NAZWA = nazwa_woj_szk,
-           branza, typ_szk2 = typ_szk_mlodoc, teryt_pow_szk, sexf, nazwa_zaw,
+    select(id_abs, rok_abs, rok, miesiac, mscrok, WOJ_NAZWA,
+           branza, typ_szk2, teryt_pow_szk, sexf, nazwa_zaw,
            S7 = status, nauka_studiaf, nauka_spolicf, nauka_kkzf,
            nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie, teryt_woj)
-  p3_light$typ_szk2 <- droplevels(p3_light$typ_szk2)
+#  p3_light$typ_szk2 <- droplevels(p3_light$typ_szk2)
 
   # Zwracanie listy z wynikowymi ramkami danych
   return(list(p2_1_light = p2_1_light,

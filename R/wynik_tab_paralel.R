@@ -137,17 +137,16 @@ wypelnij_wyniki_wskaznikow_rownolegle <- function(param_df, p2_1, p3, p4) {
           # Dodatkowe filtry (rok, miesiac) na już wstępnie odfiltrowanych danych
           dane_dla_pojedynczego_wiersza <- filtered_data_for_group
 
+          # Specjalna logika dla K2, która nie używa 'miesiac', ale 'okres_kont'
+          if (current_wskaznik == "K2") {
+            dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
+              filter(.data$okres_kont == ((group_rok_abs * 12) + 12))
+          }
           # Krok 1: Zastosuj filtr ROKU, jeśli jest dostępny
           if (!is.na(current_rok)) {
-            # Specjalna logika dla K2, która nie używa 'miesiac', ale 'okres_kont'
-            if (current_wskaznik == "K2") {
-              dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
-                filter(.data$rok == current_rok, .data$okres_kont == ((group_rok_abs * 12) + 12))
-            } else {
-              # Standardowe filtrowanie po roku dla wszystkich innych wskaźników
+            # Standardowe filtrowanie po roku dla wszystkich innych wskaźników
               dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
                 filter(.data$rok == current_rok)
-            }
           }
 
           # Krok 2: Zastosuj filtr MIESIĄCA na już przefiltrowanych danych (jeśli miesiąc jest dostępny)
@@ -347,7 +346,7 @@ wypelnij_wyniki_branzowe_rownolegle <- function(param_df, p2_1, p3, p4) {
   wskaznik_to_data_map <- list(
     "S7" = "p3", "K1" = "p3", "W1" = "p3", "B1" = "p3",
     "D1" = "p4", "D2" = "p4", "typ_szk2" = "p4",
-    "K2" = "p2_1", "meta_zaw" = "p4", "migracje" = "p3"
+    "K2" = "p2_1", "meta_zaw" = "p4"
   )
 
   # Dynamiczne funkcje (na podstawie stringa) - małe, można eksportować
@@ -415,7 +414,7 @@ wypelnij_wyniki_branzowe_rownolegle <- function(param_df, p2_1, p3, p4) {
     # Odbywa się to raz na grupę, w obrębie worker'a, na jego kopii *jednego* dużego zbioru
     filtered_data_for_group <- dane_do_filtrowania_group
 
-    if (!is.na(group_branza) && group_branza != "Polska") {
+    if (!is.na(group_branza)) {
       filtered_data_for_group <- filtered_data_for_group %>% filter(.data$branza == group_branza)
     }
 
@@ -460,17 +459,16 @@ wypelnij_wyniki_branzowe_rownolegle <- function(param_df, p2_1, p3, p4) {
           # Dodatkowe filtry (rok, miesiac) na już wstępnie odfiltrowanych danych
           dane_dla_pojedynczego_wiersza <- filtered_data_for_group
 
+          # Specjalna logika dla K2, która nie używa 'miesiac', ale 'okres_kont'
+          if (current_wskaznik == "K2") {
+            dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
+              filter(.data$okres_kont == ((group_rok_abs * 12) + 12))
+          }
           # Krok 1: Zastosuj filtr ROKU, jeśli jest dostępny
           if (!is.na(current_rok)) {
-            # Specjalna logika dla K2, która nie używa 'miesiac', ale 'okres_kont'
-            if (current_wskaznik == "K2") {
-              dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
-                filter(.data$rok == current_rok, .data$okres_kont == ((group_rok_abs * 12) + 12))
-            } else {
-              # Standardowe filtrowanie po roku dla wszystkich innych wskaźników
-              dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
-                filter(.data$rok == current_rok)
-            }
+            # Standardowe filtrowanie po roku dla wszystkich innych wskaźników
+            dane_dla_pojedynczego_wiersza <- dane_dla_pojedynczego_wiersza %>%
+              filter(.data$rok == current_rok)
           }
 
           # Krok 2: Zastosuj filtr MIESIĄCA na już przefiltrowanych danych (jeśli miesiąc jest dostępny)

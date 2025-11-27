@@ -1,19 +1,19 @@
 # Stałe definicje dla typów szkół i województw
 TYPY_SZKOL <- c(
-  "Liceum ogólnokształcące",
+  "Liceum ogólnokształcące dla młodzieży",
+  "Liceum ogólnokształcące dla dorosłych",
+  "Branżowa szkoła I stopnia",
   "Młodociani w Branżowej szkole I stopnia",
-  "Szkoła policealna",
-  "Liceum dla dorosłych",
   "Niemłodociani w Branżowej szkole I stopnia",
-  "Szkoła specjalna przysposabiająca do pracy",
   "Technikum",
   "Branżowa szkoła II stopnia",
-  "Branżowa szkoła I stopnia"
+  "Szkoła policealna",
+  "Szkoła specjalna przysposabiająca do pracy"
 )
 
 TYPY_SZKOL_OGOL <- c(
-  "Liceum ogólnokształcące",
-  "Liceum dla dorosłych",
+  "Liceum ogólnokształcące dla młodzieży",
+  "Liceum ogólnokształcące dla dorosłych",
   "Szkoła specjalna przysposabiająca do pracy"
 )
 
@@ -28,15 +28,15 @@ TYPY_SZKOL_ZAW <- c(
 )
 
 TYPY_SZKOL_D2 <- c(
-  "Liceum ogólnokształcące",
-  "Liceum dla dorosłych",
+  "Liceum ogólnokształcące dla młodzieży",
+  "Liceum ogólnokształcące dla dorosłych",
   "Technikum",
   "Branżowa szkoła II stopnia"
 )
 
 TYPY_SZKOL_K1m <- c(
-  "Liceum ogólnokształcące",
-  "Liceum dla dorosłych",
+  "Liceum ogólnokształcące dla młodzieży",
+  "Liceum ogólnokształcące dla dorosłych",
   "Technikum",
   "Branżowa szkoła II stopnia",
   "Szkoła policealna"
@@ -49,8 +49,8 @@ TYPY_SZKOL_K1b <- c(
 )
 
 TYPY_SZKOL_K2o <- c(
-  "Liceum ogólnokształcące",
-  "Liceum dla dorosłych"
+  "Liceum ogólnokształcące dla młodzieży",
+  "Liceum ogólnokształcące dla dorosłych"
 )
 
 TYPY_SZKOL_K2z <- c(

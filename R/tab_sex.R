@@ -229,30 +229,58 @@ tab_wier_K2 <- function(dat, wskaznik, kryterium) {
 
 #' @title funkcja tworzaca tabele ze statystykami wynagrodzen w poidziale na
 #' kryterium (płeć lub zawód)
-#' @import daneIBE
-#' @importFrom dplyr  %>% n_distinct
 #' @param dat dane na podstawie ktorych ma powstac tabela bedące podzbiorem
 #' tabeli p3wyodrębnionym ze względu na typ szkoły, (ewentualnie) województwo,
 #' rok absolwenta oraz okres za który mają być uśrednione zarobki
 #' @param kryterium zmienna przez która ma być skrosowany wskaznik domyslnie
 #' płeć lub nazwa zawodu
+#' @import daneIBE
+#' @importFrom dplyr %>% n_distinct group_by summarize arrange desc filter mutate bind_rows n
+#' @importFrom rlang :=
+#' @importFrom stats median quantile
 #' @export
 tab_wyna <- function(dat, kryterium) {
+  dat <- dat %>%
+    filter(W1 > 0)
   if (n_distinct(dat$id_abs) >= 10) {
-    dat_wyna = dat %>%
+    dat_avg_wyna <- dat %>%
       group_by(id_abs, {{kryterium}}) %>%
-      summarize(wynagrodzenie = mean(W1, na.rm = TRUE)) %>%
+      summarize(wynagrodzenie = mean(W1, na.rm = TRUE), .groups = "drop")
+
+    # Krok 2: Oblicz statystyki z podziałem na kryterium (tak jak wcześniej)
+    dat_grouped <- dat_avg_wyna %>%
       group_by({{kryterium}}) %>%
-      summarize(n=n(),
-                sre=mean(wynagrodzenie, na.rm = TRUE),
-                q5=quantile(wynagrodzenie, probs=0.05, na.rm = TRUE),
-                q25=quantile(wynagrodzenie, probs=0.25, na.rm = TRUE),
-                med=median(wynagrodzenie, na.rm = TRUE),
-                q75=quantile(wynagrodzenie, probs=0.75, na.rm = TRUE),
-                q95=quantile(wynagrodzenie, probs=0.95, na.rm = TRUE)) %>%
-      arrange(desc(n)) %>% filter(n>10)
+      summarize(
+        n = n(),
+        sre = mean(wynagrodzenie, na.rm = TRUE),
+        q5 = quantile(wynagrodzenie, probs = 0.05, na.rm = TRUE),
+        q25 = quantile(wynagrodzenie, probs = 0.25, na.rm = TRUE),
+        med = median(wynagrodzenie, na.rm = TRUE),
+        q75 = quantile(wynagrodzenie, probs = 0.75, na.rm = TRUE),
+        q95 = quantile(wynagrodzenie, probs = 0.95, na.rm = TRUE)
+      ) %>%
+      arrange(desc(n)) %>%
+      filter(n >= 10)
+
+    # Krok 3: Oblicz statystyki dla całości ("Ogółem")
+    dat_ogolem <- dat_avg_wyna %>%
+      summarize(
+        n = n(),
+        sre = mean(wynagrodzenie, na.rm = TRUE),
+        q5 = quantile(wynagrodzenie, probs = 0.05, na.rm = TRUE),
+        q25 = quantile(wynagrodzenie, probs = 0.25, na.rm = TRUE),
+        med = median(wynagrodzenie, na.rm = TRUE),
+        q75 = quantile(wynagrodzenie, probs = 0.75, na.rm = TRUE),
+        q95 = quantile(wynagrodzenie, probs = 0.95, na.rm = TRUE)
+      ) %>%
+      # Dodaj kolumnę z etykietą "Ogółem"
+      mutate("{{kryterium}}" := "Ogółem")
+
+    # Krok 4: Połącz obie ramki danych
+    dat_wyna <- bind_rows(dat_ogolem, dat_grouped)
+
   } else {
-    dat_wyna = data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
+    dat_wyna <- data.frame(Uwaga = "Nie można pokazać wyników - zbyt mała liczba obserwacji (n<10)")
   }
   return(dat_wyna)
 }
