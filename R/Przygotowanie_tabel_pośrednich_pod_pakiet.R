@@ -130,7 +130,7 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
     select(id_abs, rok_abs, rok, miesiac, mscrok, WOJ_NAZWA,
            branza, typ_szk2, teryt_pow_szk, sexf, nazwa_zaw,
            S7 = status, nauka_studiaf, nauka_spolicf, nauka_kkzf,
-           nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie, teryt_woj)
+           nauka_bs2stf, nauka_loddf, B1, W1 = wynagrodzenie_stawka, teryt_woj)
 #  p3_light$typ_szk2 <- droplevels(p3_light$typ_szk2)
 
   # Zwracanie listy z wynikowymi ramkami danych
