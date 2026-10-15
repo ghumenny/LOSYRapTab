@@ -40,7 +40,7 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
 
   # Przetwarzanie zbioru p4
-  p4_light <- p4 %>%
+  p4l <- p4 %>%
     mutate(
       sexf = factor(
         ifelse(plec == "K", 1, 0),
@@ -67,12 +67,20 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
                           "Szkoła specjalna przysposabiająca do pracy"
                         ))) %>%
     select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2, sexf,
-           nazwa_zaw, teryt_pow_szk, D1 = dyplom_zaw, D2)
+           nazwa_zaw, teryt_pow_szk, D1 = dyplom_zaw, D2, zmarl_mies_od_ukoncz)
 #  p4_light$typ_szk2 <- droplevels(p4_light$typ_szk2)
 
+  p4_light <- p4l %>%
+    filter(is.na(zmarl_mies_od_ukoncz) | zmarl_mies_od_ukoncz < 0) %>%
+    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2, sexf,
+           nazwa_zaw, teryt_pow_szk, D1 = dyplom_zaw, D2)
+
+
   # Przetwarzanie zbioru p2
-  p2_1_light <- przetwarzaj_p2(p2) %>%
-    left_join(p4_light %>%
+  p2_1_light <- p2 |> filter(mies_od_ukoncz = 6) |>
+    przetwarzaj_p2() %>%
+    inner_join(p4l  %>%
+                 filter(is.na(zmarl_mies_od_ukoncz) | zmarl_mies_od_ukoncz < 6) %>%
                  select(id_abs, rok_abs, sexf, typ_szk2,
                         WOJ_NAZWA, branza, nazwa_zaw),
                by = c("id_abs", "rok_abs")) %>%
@@ -87,8 +95,8 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
 
   # Przetwarzanie zbioru p3
-  p3_light <- p3 %>%
-    left_join(p4_light %>% select(id_abs, rok_abs, teryt_pow_szk, WOJ_NAZWA,
+  p3_light <- p3 %>% filter(zmarl = FALSE) %>%
+    left_join(p4l %>% select(id_abs, rok_abs, teryt_pow_szk, WOJ_NAZWA,
                             typ_szk2, sexf, nazwa_zaw, branza),
               by = c("id_abs" = "id_abs", "rok_abs" = "rok_abs")) %>%
     unite("mscrok", c(miesiac, rok), remove = FALSE, sep = ".") %>%

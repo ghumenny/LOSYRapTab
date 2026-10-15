@@ -20,7 +20,7 @@
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_s7_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_s7 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_s7 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -92,7 +92,7 @@ generuj_ramke_s7_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_d1_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_d1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_d1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
   typy_szk_d1 <- setdiff(TYPY_SZKOL, TYPY_SZKOL_OGOL)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
@@ -137,7 +137,7 @@ generuj_ramke_d1_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_d2_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_d2 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_d2 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -198,7 +198,7 @@ generuj_ramke_d2_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_k1_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_k1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_k1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -288,7 +288,7 @@ generuj_ramke_k1_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_k2_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_k2 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_k2 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
   typy_analizy_k2 <- c("dziedziny", "dyscypliny")
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
@@ -355,7 +355,7 @@ generuj_ramke_k2_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_w1_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_w1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_w1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -430,7 +430,7 @@ generuj_ramke_w1_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_b1_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_b1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_b1 <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -500,7 +500,7 @@ generuj_ramke_b1_parametry <- function(glowna_edycja, typ = "woj") {
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_null_typszk2_sexf_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -544,7 +544,7 @@ generuj_ramke_null_typszk2_sexf_parametry <- function(glowna_edycja, typ = "woj"
 #' @importFrom rlang sym
 #' @export
 generuj_ramke_null_typszk2_nazwazaw_parametry <- function(glowna_edycja, typ = "woj") {
-  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   # Ustalenie dynamicznej nazwy kolumny i wektora wartości
   grupa <- ustaw_grupe_parametrów(typ)
@@ -579,15 +579,15 @@ generuj_ramke_null_typszk2_nazwazaw_parametry <- function(glowna_edycja, typ = "
 #' @param glowna_edycja Liczba całkowita reprezentująca główną edycję (rok),
 #'   dla której generowane są parametry. Np. 2025.
 #' @return Ramka danych typu `tibble` zawierająca kolumny:
-#'   `wskaznik` (z wartością "meta_zaw"), `WOJ_NAZWA`, `typ_szk2` (NULL), `rok_abs`,
-#'   `edycja`, `kryterium` (z wartością "teryt_woj"), `rok`, `miesaic`
+#'   `wskaznik` (z wartością "migracje"), `WOJ_NAZWA`, `typ_szk2` (NULL), `rok_abs`,
+#'   `edycja`, `kryterium` (z wartością "teryt_woj"),
 #'    oraz `wynik` (inicjowany jako `NULL`).
 #' @importFrom dplyr select mutate rowwise ungroup
 #' @importFrom tidyr expand_grid unnest
 #' @importFrom purrr map
 #' @export
 generuj_ramke_migracje <- function(glowna_edycja) {
-  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 5)
+  roki_abs <- c(glowna_edycja - 1, glowna_edycja - 2, glowna_edycja - 7)
 
   ramka_null_nazwazaw <- expand_grid(
     wskaznik = "migracje", # Nazwa wskaźnika dla tej specyficznej agregacji

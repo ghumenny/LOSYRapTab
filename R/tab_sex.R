@@ -67,8 +67,12 @@ tab_msc <- function(dat, wskaznik, kryterium, edycja) {
                  paste0("pct_11.",edycja-1),paste0("pct_12.",edycja-1),
                  paste0("pct_1.",edycja),paste0("pct_2.",edycja),
                  paste0("pct_3.",edycja))
-    } else if (edycja - rok_a == 5) {
+    } else if (edycja - rok_a == 7) {
       kol_1 <- c(as.character(substitute(wskaznik)),
+                 paste0("pct_9.",edycja-7),paste0("pct_12.",edycja-7),
+                 paste0("pct_3.",edycja-6),paste0("pct_6.",edycja-6),
+                 paste0("pct_9.",edycja-6),paste0("pct_12.",edycja-6),
+                 paste0("pct_3.",edycja-5),paste0("pct_6.",edycja-5),
                  paste0("pct_9.",edycja-5),paste0("pct_12.",edycja-5),
                  paste0("pct_3.",edycja-4),paste0("pct_6.",edycja-4),
                  paste0("pct_9.",edycja-4),paste0("pct_12.",edycja-4),
