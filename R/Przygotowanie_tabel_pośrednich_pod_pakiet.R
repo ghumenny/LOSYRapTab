@@ -72,12 +72,12 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
   p4_light <- p4l %>%
     filter(is.na(zmarl_mies_od_ukoncz) | zmarl_mies_od_ukoncz < 0) %>%
-    select(id_abs, rok_abs, WOJ_NAZWA = nazwa_woj_szk, branza, typ_szk2, sexf,
-           nazwa_zaw, teryt_pow_szk, D1 = dyplom_zaw, D2)
+    select(id_abs, rok_abs, WOJ_NAZWA, branza, typ_szk2, sexf,
+           nazwa_zaw, teryt_pow_szk, D1, D2)
 
 
   # Przetwarzanie zbioru p2
-  p2_1_light <- p2 |> filter(mies_od_ukoncz = 6) |>
+  p2_1_light <- p2 |> filter(mies_od_ukoncz == 6) |>
     przetwarzaj_p2() %>%
     inner_join(p4l  %>%
                  filter(is.na(zmarl_mies_od_ukoncz) | zmarl_mies_od_ukoncz < 6) %>%
@@ -95,7 +95,7 @@ przygotuj_p2p3p4 <- function(p2, p3, p4) {
 
 
   # Przetwarzanie zbioru p3
-  p3_light <- p3 %>% filter(zmarl = FALSE) %>%
+  p3_light <- p3 %>% filter(zmarl == FALSE) %>%
     left_join(p4l %>% select(id_abs, rok_abs, teryt_pow_szk, WOJ_NAZWA,
                             typ_szk2, sexf, nazwa_zaw, branza),
               by = c("id_abs" = "id_abs", "rok_abs" = "rok_abs")) %>%
